@@ -1,7 +1,11 @@
 // =======================================================
 // Quiz Story - Meganthropus
-// script.js (LENGKAP)
+// script.js (LENGKAP - versi ES Module)
 // =======================================================
+
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 // -----------------------------
 // ELEMENT
@@ -87,7 +91,7 @@ function initThree(){
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls = new OrbitControls(camera, renderer.domElement);
     controls.enablePan = false;
     controls.target.set(0, 1, 0);
     controls.update();
@@ -101,7 +105,7 @@ function initThree(){
     light.position.set(5, 10, 5);
     scene.add(light);
 
-    loader = new THREE.GLTFLoader();
+    loader = new GLTFLoader();
 }
 
 // =======================================================
@@ -132,7 +136,7 @@ function loadScene(index){
     const data = story[index];
     chapter.innerHTML = "Chapter " + (index + 1);
 
-    // background (folder: images/, BUKAN assets/images/)
+    // background
     new THREE.TextureLoader().load(
         "assets/images/" + data.background,
         (texture) => {
@@ -153,7 +157,6 @@ function loadScene(index){
         }
     }
 
-    // folder: model/, BUKAN assets/model/
     loader.load(
         "assets/model/" + data.player,
         (gltf) => {
@@ -166,7 +169,7 @@ function loadScene(index){
     );
 
     loader.load(
-        "model/" + data.enemy,
+        "assets/model/" + data.enemy,
         (gltf) => {
             babi = gltf.scene;
             babi.position.x = 1.2;
@@ -288,10 +291,10 @@ function selectAnswer(i){
         score += 10;
         scoreValue.innerHTML = score;
         // Meganthropus menyerang, babi mati
-        swapModel("model/meganthropus-attack.glb", "model/babi-death.glb");
+        swapModel("assets/model/meganthropus-attack.glb", "assets/model/babi-death.glb");
     }else{
         // Babi menyerang, meganthropus kalah
-        swapModel("model/meganthropus-defeat.glb", "model/babi-nyerang.glb");
+        swapModel("assets/model/meganthropus-defeat.glb", "assets/model/babi-nyerang.glb");
     }
 
     // beri jeda supaya animasi kelihatan dulu sebelum popup muncul
