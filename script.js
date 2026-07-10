@@ -1,6 +1,6 @@
 // =======================================================
 // Quiz Story - Meganthropus
-// script.js (LENGKAP - versi ES Module)
+// script.js (LENGKAP - versi ES Module, FIXED)
 // =======================================================
 
 import * as THREE from "three";
@@ -56,6 +56,13 @@ let currentScene = 0;
 let dialogIndex = 0;
 let score = 0;
 let isAnswered = false;
+
+// -----------------------------
+// TYPEWRITER STATE (FIX #2)
+// -----------------------------
+let typeInterval = null;
+let isTyping = false;
+let currentFullText = "";
 
 // =======================================================
 // INIT
@@ -113,9 +120,17 @@ function initThree(){
 // =======================================================
 
 async function loadStory(){
-    const response = await fetch("story.json");
-    story = await response.json();
-    loadScene(0);
+    try {
+        const response = await fetch("story.json");
+        if(!response.ok){
+            throw new Error("Gagal fetch story.json (status " + response.status + ")");
+        }
+        story = await response.json();
+        loadScene(0);
+    } catch(err){
+        console.error("[loadStory] Error:", err);
+        showLoadError("Gagal memuat story.json. Cek console untuk detail.");
+    }
 }
 
 // =======================================================
@@ -141,6 +156,10 @@ function loadScene(index){
         "assets/images/" + data.background,
         (texture) => {
             scene.background = texture;
+        },
+        undefined,
+        (err) => {
+            console.error("[loadScene] Gagal load background:", "assets/images/" + data.background, err);
         }
     );
 
@@ -148,9 +167,11 @@ function loadScene(index){
     clearModels();
 
     let loadedCount = 0;
+    let doneCalled = false;
     function checkDone(){
         loadedCount++;
-        if(loadedCount >= 2){
+        if(loadedCount >= 2 && !doneCalled){
+            doneCalled = true;
             loading.style.display = "none";
             fade.classList.remove("active");
             showDialog();
@@ -165,6 +186,11 @@ function loadScene(index){
             scene.add(meganthropus);
             playAnimation(gltf, "player");
             checkDone();
+        },
+        undefined,
+        (err) => {
+            console.error("[loadScene] Gagal load model player:", "assets/model/" + data.player, err);
+            checkDone(); // FIX #1: jangan biarkan loading screen nyangkut
         }
     );
 
@@ -176,8 +202,22 @@ function loadScene(index){
             scene.add(babi);
             playAnimation(gltf, "enemy");
             checkDone();
+        },
+        undefined,
+        (err) => {
+            console.error("[loadScene] Gagal load model enemy:", "assets/model/" + data.enemy, err);
+            checkDone(); // FIX #1: jangan biarkan loading screen nyangkut
         }
     );
+}
+
+// =======================================================
+// TAMPILKAN PESAN ERROR DI LOADING SCREEN (FIX #1)
+// =======================================================
+
+function showLoadError(message){
+    loading.style.display = "flex";
+    loading.innerHTML = "<h2 style='color:#ff5252;text-align:center;padding:20px'>" + message + "</h2>";
 }
 
 // =======================================================
@@ -225,17 +265,27 @@ function showDialog(){
 }
 
 // =======================================================
-// TYPE EFFECT
+// TYPE EFFECT (FIX #2: hentikan interval lama sebelum mulai baru)
 // =======================================================
 
 function typeWriter(text){
+    if(typeInterval){
+        clearInterval(typeInterval);
+        typeInterval = null;
+    }
+
     dialogText.innerHTML = "";
+    currentFullText = text;
+    isTyping = true;
+
     let i = 0;
-    const interval = setInterval(() => {
+    typeInterval = setInterval(() => {
         dialogText.innerHTML += text.charAt(i);
         i++;
         if(i >= text.length){
-            clearInterval(interval);
+            clearInterval(typeInterval);
+            typeInterval = null;
+            isTyping = false;
         }
     }, 25);
 }
@@ -245,6 +295,16 @@ function typeWriter(text){
 // =======================================================
 
 nextButton.onclick = () => {
+    // FIX #2: kalau masih dalam proses ngetik, klik pertama cukup
+    // menyelesaikan teksnya dulu (tidak langsung lompat ke dialog berikutnya)
+    if(isTyping){
+        clearInterval(typeInterval);
+        typeInterval = null;
+        isTyping = false;
+        dialogText.innerHTML = currentFullText;
+        return;
+    }
+
     const data = story[currentScene];
     dialogIndex++;
 
@@ -269,8 +329,15 @@ function showQuestion(){
     dialogText.innerHTML = q.text;
 
     choiceButtons.forEach((btn, i) => {
-        btn.innerHTML = q.answers[i].text;
-        btn.onclick = () => selectAnswer(i);
+        if(q.answers[i]){
+            btn.style.display = "block";
+            btn.innerHTML = q.answers[i].text;
+            btn.onclick = () => selectAnswer(i);
+        }else{
+            // FIX: sembunyikan tombol jika jumlah jawaban < jumlah tombol
+            btn.style.display = "none";
+            btn.onclick = null;
+        }
     });
 }
 
@@ -310,19 +377,29 @@ function selectAnswer(i){
 function swapModel(playerFile, enemyFile){
     clearModels();
 
-    loader.load(playerFile, (gltf) => {
-        meganthropus = gltf.scene;
-        meganthropus.position.x = -0.8;
-        scene.add(meganthropus);
-        playAnimation(gltf, "player");
-    });
+    loader.load(
+        playerFile,
+        (gltf) => {
+            meganthropus = gltf.scene;
+            meganthropus.position.x = -0.8;
+            scene.add(meganthropus);
+            playAnimation(gltf, "player");
+        },
+        undefined,
+        (err) => console.error("[swapModel] Gagal load:", playerFile, err)
+    );
 
-    loader.load(enemyFile, (gltf) => {
-        babi = gltf.scene;
-        babi.position.x = 1.2;
-        scene.add(babi);
-        playAnimation(gltf, "enemy");
-    });
+    loader.load(
+        enemyFile,
+        (gltf) => {
+            babi = gltf.scene;
+            babi.position.x = 1.2;
+            scene.add(babi);
+            playAnimation(gltf, "enemy");
+        },
+        undefined,
+        (err) => console.error("[swapModel] Gagal load:", enemyFile, err)
+    );
 }
 
 // =======================================================
