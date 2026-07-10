@@ -1,0 +1,152 @@
+[
+  {
+    "speaker": "Narator",
+
+    "background": "background.png",
+
+    "player": "meganthropus-idle.glb",
+
+    "enemy": "babi-run.glb",
+
+    "dialog": [
+      "Hari mulai menjelang sore. Kamu adalah anggota kelompok Meganthropus Paleojavanicus.",
+      "Kelompokmu sedang mencari makanan di sebuah hutan dekat sungai.",
+      "Seekor babi hutan terlihat sedang mencari makan tidak jauh dari tempatmu."
+    ],
+
+    "question": {
+
+      "text": "Apa tindakan yang paling tepat dilakukan?",
+
+      "answers": [
+
+        {
+          "text": "Mengendap perlahan lalu menyerang dari jarak dekat.",
+          "correct": true,
+          "explanation": "Benar. Manusia purba berburu dengan mendekati mangsa secara hati-hati agar peluang berhasil lebih besar."
+        },
+
+        {
+          "text": "Berlari sambil berteriak mengejar babi.",
+          "correct": false,
+          "explanation": "Kurang tepat. Suara keras justru membuat hewan buruannya melarikan diri."
+        },
+
+        {
+          "text": "Duduk dan menunggu babi datang sendiri.",
+          "correct": false,
+          "explanation": "Kurang tepat. Berburu membutuhkan strategi aktif untuk mendapatkan makanan."
+        }
+
+      ]
+
+    }
+
+  },
+
+  {
+    "speaker": "Narator",
+
+    "background": "background.png",
+
+    "player": "meganthropus-idle.glb",
+
+    "enemy": "babi-run.glb",
+
+    "dialog": [
+
+      "Setelah berhasil mendekati babi, kelompokmu harus menentukan cara menyerang.",
+
+      "Setiap keputusan menentukan keberhasilan berburu."
+
+    ],
+
+    "question": {
+
+      "text": "Apa yang paling efektif?",
+
+      "answers": [
+
+        {
+
+          "text": "Menyerang bersama-sama.",
+          "correct": true,
+          "explanation": "Benar. Berburu secara berkelompok meningkatkan peluang menangkap hewan."
+
+        },
+
+        {
+
+          "text": "Menyerang sendirian.",
+          "correct": false,
+          "explanation": "Kurang tepat. Berburu sendirian jauh lebih berisiko."
+
+        },
+
+        {
+
+          "text": "Kabur meninggalkan kelompok.",
+          "correct": false,
+          "explanation": "Tidak tepat. Kerja sama merupakan salah satu kunci keberhasilan berburu."
+
+        }
+
+      ]
+
+    }
+
+  },
+
+  {
+    "speaker": "Narator",
+
+    "background": "background.png",
+
+    "player": "meganthropus-idle.glb",
+
+    "enemy": "babi-run.glb",
+
+    "dialog": [
+
+      "Perburuan telah selesai.",
+
+      "Kini kelompokmu membawa hasil buruan kembali ke tempat tinggal."
+
+    ],
+
+    "question": {
+
+      "text": "Mengapa manusia purba berburu?",
+
+      "answers": [
+
+        {
+
+          "text": "Untuk memenuhi kebutuhan makanan.",
+          "correct": true,
+          "explanation": "Benar. Berburu merupakan salah satu cara utama memperoleh makanan pada masa berburu dan meramu."
+
+        },
+
+        {
+
+          "text": "Untuk berolahraga.",
+          "correct": false,
+          "explanation": "Kurang tepat. Tujuan utama berburu adalah memperoleh sumber pangan."
+
+        },
+
+        {
+
+          "text": "Sekadar bermain.",
+          "correct": false,
+          "explanation": "Tidak tepat. Aktivitas berburu berkaitan langsung dengan kelangsungan hidup."
+
+        }
+
+      ]
+
+    }
+
+  }
+]
