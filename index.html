@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,139 +8,69 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Three.js -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-
-    <!-- Orbit Control -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-
-    <!-- GLTF Loader -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Three.js r160 sudah module-only, jadi kita pakai importmap -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
 </head>
-
 <body>
 
     <!-- Loading -->
     <div id="loading-screen">
-
         <div class="loader"></div>
-
         <h2>Memuat Dunia Praaksara...</h2>
-
     </div>
 
     <!-- ThreeJS -->
     <div id="game">
-
         <canvas id="three-canvas"></canvas>
-
     </div>
 
     <!-- HUD -->
     <div id="hud">
-
-        <div id="chapter">
-            Chapter 1
-        </div>
-
-        <div id="score">
-            Skor : <span id="scoreValue">0</span>
-        </div>
-
+        <div id="chapter">Chapter 1</div>
+        <div id="score">Skor : <span id="scoreValue">0</span></div>
     </div>
 
     <!-- Dialog -->
     <div id="dialogBox">
-
-        <div id="speaker">
-
-            Narator
-
-        </div>
-
-        <div id="dialogText">
-
-            ...
-
-        </div>
-
-        <button id="nextButton">
-
-            Lanjut →
-
-        </button>
-
+        <div id="speaker">Narator</div>
+        <div id="dialogText">...</div>
+        <button id="nextButton">Lanjut &rarr;</button>
     </div>
 
     <!-- Choice -->
     <div id="choiceBox">
-
         <button class="choiceBtn" id="choice1"></button>
-
         <button class="choiceBtn" id="choice2"></button>
-
         <button class="choiceBtn" id="choice3"></button>
-
     </div>
 
     <!-- Result -->
     <div id="resultPopup">
-
-        <h1 id="resultTitle">
-
-            Benar!
-
-        </h1>
-
-        <p id="resultExplanation">
-
-            Penjelasan...
-
-        </p>
-
-        <button id="continueButton">
-
-            Lanjut Cerita
-
-        </button>
-
+        <h1 id="resultTitle">Benar!</h1>
+        <p id="resultExplanation">Penjelasan...</p>
+        <button id="continueButton">Lanjut Cerita</button>
     </div>
 
     <!-- Ending -->
     <div id="endingScreen">
-
-        <h1>
-
-            Quiz Selesai
-
-        </h1>
-
-        <h2>
-
-            Skor Akhir
-
-        </h2>
-
-        <h3 id="finalScore">
-
-            0
-
-        </h3>
-
-        <button id="restartButton">
-
-            Main Lagi
-
-        </button>
-
+        <h1>Quiz Selesai</h1>
+        <h2>Skor Akhir</h2>
+        <h3 id="finalScore">0</h3>
+        <button id="restartButton">Main Lagi</button>
     </div>
 
     <!-- Overlay -->
     <div id="fade"></div>
 
-    <!-- Script -->
-    <script src="script.js"></script>
+    <!-- Script (WAJIB type="module" karena pakai import) -->
+    <script type="module" src="script.js"></script>
 
 </body>
-
 </html>
