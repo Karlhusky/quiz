@@ -134,7 +134,7 @@ function loadScene(index){
 
     // background (folder: images/, BUKAN assets/images/)
     new THREE.TextureLoader().load(
-        "images/" + data.background,
+        "assets/images/" + data.background,
         (texture) => {
             scene.background = texture;
         }
@@ -155,7 +155,7 @@ function loadScene(index){
 
     // folder: model/, BUKAN assets/model/
     loader.load(
-        "model/" + data.player,
+        "assets/model/" + data.player,
         (gltf) => {
             meganthropus = gltf.scene;
             meganthropus.position.x = -0.8;
